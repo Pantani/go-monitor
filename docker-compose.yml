@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    environment:
+      - APP_URL=${APP_URL}
+    volumes:
+      - ./entrypoint.sh:/entrypoint.sh
+      - ./prometheus/prometheus.yml:/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    entrypoint:
+      - /entrypoint.sh
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/config.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./grafana/dashboards/:/etc/grafana/provisioning/dashboards/
+    links:
+      - prometheus
+      
