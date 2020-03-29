@@ -6,18 +6,21 @@ services:
     environment:
       - APP_URL=${APP_URL}
     volumes:
-      - ./entrypoint.sh:/entrypoint.sh
+      - ./prometheus/entrypoint.sh:/prometheus/entrypoint.sh
       - ./prometheus/prometheus.yml:/prometheus/prometheus.yml
     ports:
-      - "9090:9090"
+      - 9090:9090
     entrypoint:
-      - /entrypoint.sh
+      - /prometheus/entrypoint.sh
 
   grafana:
     image: grafana/grafana
     container_name: grafana
+    environment:
+      - PORT=${PORT}
+      - PROMETHEUS_URL=${PROMETHEUS_URL}
     ports:
-      - "3000:3000"
+      - ${PORT}:3000
     volumes:
       - ./grafana/config.ini:/etc/grafana/grafana.ini
       - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml

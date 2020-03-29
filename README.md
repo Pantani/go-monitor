@@ -15,5 +15,4 @@ docker-compose up -d
 ```
 
 Grafana Dashboard: `localhost:3000`
-
 Prometheus: `localhost:9090`
